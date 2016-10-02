@@ -1,0 +1,130 @@
+ext {
+    compileSdkVersion = 24
+    buildToolsVersion = "24.0.2"
+    minSdkVersion = 14
+    targetSdkVersion = 24
+
+
+    ///
+    /// LIBS VERSIONS
+    ///
+
+    def versionAndroidSDK = '24.2.0'
+
+    def versionDagger = '2.7'
+    def versionRxJava = '1.2.0'
+    def versionRxAndroid = '1.2.1'
+    def versionOkHttp = '3.4.1'
+    def versionGson = '2.7'
+    def autoParcelVersion = '1.0.3'
+
+    def versionJUnit = '4.12'
+    def versionEspresso = '2.2.2'
+
+    ///
+    /// LIBS
+    ///
+
+    def androidLibs = [
+            appCompat  : [group: 'com.android.support', name: 'appcompat-v7', version: versionAndroidSDK]
+    ]
+
+
+    def libs = [
+            dagger:          [group: 'com.google.dagger', name: 'dagger', version:versionDagger],
+            daggerCompiler:  [group: 'com.google.dagger', name: 'dagger-compiler', version:versionDagger],
+            rxAndroid:       [group: 'io.reactivex', name: 'rxandroid', version: versionRxAndroid],
+            rxJava:          [group: 'io.reactivex', name: 'rxjava',    version: versionRxJava],
+            rxOkHttp:        [group: 'com.squareup.okhttp3', name: 'okhttp',    version: versionOkHttp],
+            gson:            [group: 'com.google.code.gson', name: 'gson',    version: versionGson],
+            autoParcel:      [group: 'frankiesardo', name: 'auto-parcel', version: autoParcelVersion]
+    ]
+
+    def testLibs = [
+            junit           : [group: 'junit', name: 'junit', version: versionJUnit],
+            espressoCore    : [group: 'com.android.support.test.espresso', name: 'espresso-core', version: versionEspresso]
+    ]
+
+
+    ///
+    /// Modules
+    ///
+
+    def modules = [
+            data: ':data',
+            domain: ':domain'
+    ]
+
+    ///
+    /// Module Dependencies
+    ///
+
+    def supportAnnotationsExclude = {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    appModuleDependencies = [
+            [configuration: "compile", dependency: androidLibs.appCompat],
+            [configuration: "compile", dependency: libs.dagger],
+            [configuration: "apt",     dependency: libs.daggerCompiler],
+            [configuration: "compile", dependency: libs.rxAndroid],
+            [configuration: "compile", dependency: libs.rxJava],
+
+            // Modules
+            [configuration: "compile", dependency: project(modules.data)],
+            [configuration: "compile", dependency: project(modules.domain)],
+
+            // Unit Test
+            [configuration: "testCompile", dependency: testLibs.junit],
+
+            // Android Test
+            [configuration: "androidTestCompile", dependency: testLibs.espressoCore,
+             options: supportAnnotationsExclude],
+    ]
+
+    dataModuleDependencies = [
+            [configuration: "compile",  dependency: libs.gson],
+            [configuration: "provided", dependency: libs.rxJava],
+            [configuration: "provided", dependency: libs.rxAndroid],
+
+            // Unit Test
+            [configuration: "testCompile", dependency: testLibs.junit],
+    ]
+
+    domainModuleDependencies = [
+            [configuration: "compile", dependency: libs.autoParcel],
+            [configuration: "compile", dependency: libs.dagger],
+            [configuration: "apt",     dependency: libs.daggerCompiler],
+            [configuration: "provided", dependency: libs.rxJava],
+            [configuration: "provided", dependency: libs.rxJava],
+
+            // Modules
+            [configuration: "compile", dependency: project(modules.data)],
+
+            // Unit Test
+            [configuration: "testCompile", dependency: testLibs.junit],
+    ]
+
+    ///
+    /// Plugins
+    ///
+
+    def plugins = [
+            apt: 'com.neenbedankt.android-apt',
+            realm: 'realm-android',
+            retrolambda:  'me.tatarka.retrolambda'
+    ]
+
+    appModulePlugins = [
+            plugins.apt, plugins.retrolambda
+    ]
+
+    dataModulePlugins = [
+            plugins.apt, plugins.realm, plugins.retrolambda
+    ]
+
+    domainModulePlugins = [
+            plugins.apt, plugins.retrolambda
+    ]
+
+}
