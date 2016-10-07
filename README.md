@@ -2,7 +2,7 @@
 
 A big project in Android with several modules also has several Gradle files that need to be configured, and that´s a tedious task. Something that is usually done is adding dependencies to each module, in this project it will be explained how to control all modules dependencies using just a single Gradle file.
 
-The code inside (this repository is explained here)[1]
+The code inside [this repository is explained here][1]
 
 ## From
 
