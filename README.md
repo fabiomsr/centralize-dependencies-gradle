@@ -1,5 +1,8 @@
 # Gradle: Centralize Dependencies
-How to centralize libraries dependencies in gradle
+
+A big project in Android with several modules also has several Gradle files that need to be configured, and that´s a tedious task. Something that is usually done is adding dependencies to each module, in this project it will be explained how to control all modules dependencies using just a single Gradle file.
+
+The code inside (this repository is explained here)[1]
 
 ## From
 
@@ -49,3 +52,5 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+    
+[1]:https://medium.com/@develodroid/android-how-to-add-gradle-dependencies-using-foreach-c4cbcc070458#.2588yruk5
